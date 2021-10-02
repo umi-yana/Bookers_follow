@@ -10,18 +10,17 @@ class User < ApplicationRecord
   
   # ----フォロー機能アソシエーション---
   
-  #自分がフォローされる
-  has_many :reverse_of_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+  #フォローする側のアソシエーション
+  has_many :relationships,foreign_key: following_id
+  #フォローする側がフォローしている人の情報取る
+  has_many :followings, through: :relationships, source: :follower
   
-  # 自分がフォローする
-  has_many :followers, through: :reverse_of_relationships, source: :follower
   
-  # 自分をフォローしている人を参照
-  has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  # フォローされる側のアソシエーション
+  has_many :reverse_of_relationships,class_name: 'Relationship',foreign_key: follower_id
+ #フォローされている側がフォローしている情報を取る
+  has_many :followers, through: :reverse_of_relationships, source: :following
   
-  # 自分がフォローしているユーザーを参照
-  has_many :followings, through: :relationships, source: :followed
-
 
 
   validates :name,
