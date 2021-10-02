@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     @users = User.all
     @user = current_user
     @book = Book.new
+    @not_current_user = User.where.not(id: @user.id)
   end
     
   def show
@@ -34,10 +35,21 @@ class UsersController < ApplicationController
       render :edit
     end 
   end
-    
+  
+  
+  def followings
+    user = User.find(params[:user_id])
+    @users = user.followings
+  end
+  
+  def followers
+     user = User.find(params[:user_id])
+     @users = user.followers
+  end
+  
   private
    def user_params
     params.require(:user).permit(:name,:introduction,:profile_image)
-  end
-    
+   end
+     
 end

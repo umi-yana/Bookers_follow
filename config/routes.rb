@@ -7,7 +7,14 @@ Rails.application.routes.draw do
 
   resources :homes
   
-  resources :users
+  resources :users do
+    resource :relationships,only:[:create, :destroy]
+    # フォローしている人を表示するためのルーティング
+    get :followings
+    # フォワ−　されている人を表示するためにルーティング
+    get :followers
+  end
+  
     resources :books
   
 end
